@@ -7,7 +7,7 @@ var data = fetch(url).then(res => res.json()).then(downloaded_wheels => {
         wheels["wheels"][wheel].image = `wheels/${wheels["wheels"][wheel].image}`
     }
 
-    setup_menus();
+    // setup_menus();
 
     var hash = this.window.location.hash.substring(1);
     if (hash) {
@@ -24,7 +24,7 @@ const wheels_container = document.getElementById("wheels");
 const wheels_template = document.getElementById("wheel-card-template");
 const wheel_template = document.getElementById("wheel-display-template");
 
-function setup_wheels(wheel_list) {
+function RenderWheels(wheel_list) {
     if (wheel_list) {
         // Add the new children.
         wheel_list.forEach(wheel => {
@@ -43,7 +43,7 @@ function add_wheel(wheel, link) {
     write_data(node, wheel)
 }
 
-function display_wheel(wheel) {
+function RenderWheel(wheel) {
     var clone = wheel_template.content.firstElementChild.cloneNode(true);
     var node = wheels_container.appendChild(clone)
     const list = document.getElementById("wheel-tires-list");
@@ -156,7 +156,11 @@ function navagate(to) {
         wheels["brands"][to.substring("brand-".length)].forEach(id => {
             wheel_objects.push(wheels["wheels"][id])
         });
-        setup_wheels(wheel_objects);
+        RenderWheels(wheel_objects)
+    }
+
+    else if (to.startsWith("sizes")) {
+        RenderSizes();
     }
 
     else if (to.startsWith("size-")) {
@@ -175,7 +179,7 @@ function navagate(to) {
                 });
             }
         }
-        setup_wheels(wheel_objects);
+        RenderWheels(wheel_objects);
     }
 
     else if (to.startsWith("search-")) {
@@ -186,11 +190,11 @@ function navagate(to) {
                 wheel_objects.push(wheel)
             }
         }
-        setup_wheels(wheel_objects);
+        RenderWheels(wheel_objects);
     }
     
     else if (to.startsWith("wheel-")) {
         const query = to.substring("wheel-".length);
-        display_wheel(wheels["wheels"][query]);
+        RenderWheel(wheels["wheels"][query]);
     }
 }
